@@ -1,0 +1,518 @@
+files:
+
+  liquor_sales:
+    path: "datasets/liquor_sales.csv"
+    schema:
+      - column_name: "Invoice/Item Number"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Date"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Store Number"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "Store Name"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Address"
+        data_type: StringType()
+        nullable: true
+      - column_name: "City"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Zip Code"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Store Location"
+        data_type: StringType()
+        nullable: true
+      - column_name: "County Number"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "County"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Category"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "Category Name"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Vendor Number"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "Vendor Name"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Item Number"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Item Description"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Pack"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "Bottle Volume (ml)"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "State Bottle Cost"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "State Bottle Retail"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "Bottles Sold"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "Sale (Dollars)"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "Volume Sold (Liters)"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "Volume Sold (Gallons)"
+        data_type: DoubleType()
+        nullable: true
+
+  item_number_bridge:
+    path: "outputs/item_number_bridge"
+    schema:
+      - column_name: "Original Item Number"
+        data_type: IntegerType()
+        nullable: false
+      - column_name: "Current Item Number"
+        data_type: IntegerType()
+        nullable: false
+
+  category:
+    path: "outputs/categories"
+    schema:
+      - column_name: "Category Number"
+        data_type: StringType()
+        nullable: false
+      - column_name: "Category Name"
+        data_type: StringType()
+        nullable: true
+
+  vendor:
+    path: "outputs/vendors"
+    schema:
+      - column_name: "Category Number"
+        data_type: StringType()
+        nullable: false
+      - column_name: "Category Name"
+        data_type: StringType()
+        nullable: true
+
+  item_price_history:
+    path: "outputs/item_price_history"
+    schema:
+      - column_name: "Item Number"
+        data_type: StringType()
+        nullable: false
+      - column_name: "Vendor Number"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Pack"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "Bottle Volume ml"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "State Bottle Cost"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "State Bottle Retail"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "From Date"
+        data_type: DateType()
+        nullable: true
+      - column_name: "To Date"
+        data_type: DateType()
+        nullable: true
+      - column_name: "Is Current"
+        data_type: BooleanType()
+        nullable: false
+      - column_name: "Price Sequence"
+        data_type: IntegerType()
+        nullable: false
+
+  item:
+    path: "outputs/items"
+    schema:
+      - column_name: "Item Number"
+        data_type: StringType()
+        nullable: false
+      - column_name: "Item Description"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Category Number"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Vendor Number"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Pack"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "Bottle Volume ml"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "State Bottle cost"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "State Bottle Retail"
+        data_type: DoubleType()
+        nullable: true
+
+  store_number_bridge:
+    path: "outputs/store_number_bridge"
+    schema:
+      - column_name: "Original Store Number"
+        data_type: IntegerType()
+        nullable: false
+      - column_name: "Current Store Number"
+        data_type: IntegerType()
+        nullable: false
+
+  store_address_bridge:
+    path: "outputs/store_address_bridge"
+    schema:
+      - column_name: "Original Address"
+        data_type: StringType()
+        nullable: false
+      - column_name: "Current Address"
+        data_type: StringType()
+        nullable: true
+
+  store_county:
+    path: "outputs/store_counties"
+    schema:
+      - column_name: "County Number"
+        data_type: StringType()
+        nullable: false
+      - column_name: "County Name"
+        data_type: StringType()
+        nullable: true
+
+  store_address_history:
+    path: "outputs/store_address_history"
+    schema:
+      - column_name: "Store Number"
+        data_type: StringType()
+        nullable: false
+      - column_name: "Address"
+        data_type: StringType()
+        nullable: true
+      - column_name: "City"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Zip Code"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "County Number"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Latitude"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "Longitude"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "From Date"
+        data_type: DateType()
+        nullable: true
+      - column_name: "To Date"
+        data_type: DateType()
+        nullable: true
+      - column_name: "Is Current"
+        data_type: BooleanType()
+        nullable: false
+      - column_name: "Address Sequence"
+        data_type: IntegerType()
+        nullable: false
+
+  store_address:
+    path: "outputs/store_addresses"
+    schema:
+      - column_name: "Store Number"
+        data_type: StringType()
+        nullable: false
+      - column_name: "Store Name"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Address"
+        data_type: StringType()
+        nullable: true
+      - column_name: "City"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Zip Code"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "County Number"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Latitude"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "Longitude"
+        data_type: DoubleType()
+        nullable: true
+
+  invoice:
+    path: "outputs/invoices"
+    schema:
+      - column_name: "Invoice_Item Number"
+        data_type: StringType()
+        nullable: false
+      - column_name: "Store Number"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Address Sequence"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "Item Number"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Vendor Number"
+        data_type: StringType()
+        nullable: true
+      - column_name: "Price Sequence"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "Items Sold"
+        data_type: IntegerType()
+        nullable: true
+      - column_name: "Sale Dollars"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "Sale Baht"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "Volume Sold Liters"
+        data_type: DoubleType()
+        nullable: true
+      - column_name: "Date"
+        data_type: DateType()
+        nullable: true
+
+data_corrections:
+
+  category_name:
+    corrections:
+      "Cocktails /rtd": "Cocktails / Rtd"
+      "American Cordials & Liqueur": "American Cordials & Liqueurs"
+      "Imported Cordials & Liqueur": "Imported Cordials & Liqueurs"
+      "American Distilled Spirit Specialty": "American Distilled Spirits Specialty"
+      "Imported Distilled Spirit Specialty": "Imported Distilled Spirits Specialty"
+
+  vendor_name:
+    corrections:
+      "3 BADGE MIXOLOGY": "3 BADGE CORPORATION"
+      "A HARDY / USA": "A HARDY USA"
+      "A V BRANDS": "AVENIU BRANDS"
+      "ANCHOR DISTILLING (PREISS IMPORTS)": "ANCHOR DISTILLING"
+      "BLAUM BROS DISTILLING": "BLAUM BROTHERS DISTILLING"
+      "BROADBENT VENTURES": "BROADBENT DISTILLERY"
+      "BROWN FORMAN": "BROWN-FORMAN CORPORATION"
+      "CAMPARI(SKYY)": "SKYY SPIRITS"
+      "CONSTELLATION BRANDS": "CONSTELLATION WINE COMPANY"
+      "COOPERSPIRITSINTERNATIONAL": "COOPER SPIRITS INTERNATIONAL"
+      "DUGGANS DISTILLERS": "DUGGAN'S DISTILLERS PRODUCTS"
+      "DUNKEL CORPORATION": "IOWA DISTILLING COMPANY"
+      "DUNKEL CORPORATION / IOWA DISTILLING": "IOWA DISTILLING COMPANY"
+      "DOMAINE SELECT": "DOMAINE SELECT WINE ESTATES"
+      "FRANK LIN DISTILLERS PRO": "FRANK-LIN DISTILLERS PRODUCTS"
+      "GOAMERICAGO BEVERAGES LLC / WHISTLEPIG": "GOAMERICAGO BEVERAGES"
+      "GUNSANDMORE.INFO": "GUNSANDMORE INFO"
+      "GUNSANDMOREINFO": "GUNSANDMORE INFO"
+      "HOTALING AND CO": "ANCHOR DISTILLING"
+      "HOTALING AND": "ANCHOR DISTILLING"
+      "INFINIUM SPIRITS": "WILSON DANIELS"
+      "IMPEX BEVERAGE": "IMPEX BEVERAGES"
+      "JDSO INC / RED BOOT DISTILLERY": "RED BOOT DISTILLERY"
+      "KINDRED SPIRIT N AMERICA": "KINDRED SPIRITS OF NORTH AMERICA"
+      "KOBRAND": "KOBRAND CORPORATION"
+      "LUXCO": "LUXCO-ST LOUIS"
+      "LEVECKE": "LEVECKE CORPORATION"
+      "JESSE JAMES DISTILLING COMPANY": "LEVECKE CORPORATION"
+      "MAST-JAGERMEISTER US": "SIDNEY FRANK IMPORTING COMPANY"
+      "MAST-JAEGERMEISTER US": "SIDNEY FRANK IMPORTING COMPANY"
+      "MARSALLE COMPANY/STOLLER WAREHOUSE": "STOLLER WAREHOUSE"
+      "MCCORMICK DISTILLING": "MCCORMICK DISTILLING COMPANY"
+      "MODERN SPIRIT": "MODERN SPIRITS"
+      "MISSISSIPPI RIVER DISTIL": "MISSISSIPPI RIVER DISTILLING"
+      "OREGON BREWING": "ROGUE ALES AND SPIRITS"
+      "PALM BAY IMPORTS": "PALM BAY INTERNATIONAL"
+      "PATERNO IMPORTS LTD / TERLATO WINES INTERNATIONAL": "PATERNO IMPORTS"
+      "PATRON SPIRITS COMPANY": "THE PATRON SPIRITS COMPANY"
+      "PERNOD RICARD USA/AUSTIN NICHOLS": "PERNOD RICARD USA"
+      "PHILLIPS BEVERAGE": "PHILLIPS BEVERAGE COMPANY"
+      "PURPLE VALLEY IMPORTS / GLASS REVOLUTION IMPORTS": "PURPLE VALLEY IMPORTS"
+      "R�MY COINTREAU USA": "REMY COINTREAU USA"
+      "RUSSIAN STANDARD VODKA": "RUSSIAN STANDARD VODKA USA"
+      "RUSSIAN STANDARD VODKA, USA": "RUSSIAN STANDARD VODKA USA"
+      "SANDB FARMS DISTILLERY": "S AND B FARMSTEAD DISTILLERY"
+      "SANDB FARMSTEAD DISTILLERY": "S AND B FARMSTEAD DISTILLERY"
+      "SAZERAC CO": "SAZERAC COMPANY"
+      "SHAW-ROSS INTERNATIONAL": "SHAW ROSS INTERNATIONAL IMPORTERS"
+      "SIDNEY FRANK IMPORTING": "SIDNEY FRANK IMPORTING COMPANY"
+      "STOLLER IMPORTS INC / MARSALLE COMPANY": "MARSALLE COMPANY"
+      "STOLLLER WAREHOUSE": "STOLLER WAREHOUSE"
+      "ST GEORGE SPIRIT": "ST GEORGE SPIRITS"
+      "SUTTER HOME WINERY INC / TRINCHERO FAMILY ESTATES": "SUTTER HOME WINERY"
+      "TRINCHERO FAMILY ESTATES": "SUTTER HOME WINERY"
+      "TY KU": "DAVOS BRANDS"
+      "VINO COM": "TOTAL BEVERAGE SOLUTIONS"
+      "VISION WINE AND SPIRIT": "VISION WINE AND SPIRITS"
+      "WESTERN SPIRITS BEVERAGE CO": "WESTERN SPIRITS BEVERAGE"
+      "WILDMAN AND SONS F": "FREDRICK WILDMAN AND SON"
+      "WINE IS FINE INC": "ANCHOR DISTILLING"
+      "WHISTLEPIG": "GOAMERICAGO BEVERAGES"
+      "WINE IS FINE": "ANCHOR DISTILLING"
+
+  address:
+    corrections:
+        "101 COMERICAL STREET": "101 COMERCIAL STREET"
+        "1011 SOUTH FREDERICK M/A": "1011 SOUTH FREDERICK"
+        "106 SOUTH 16": "106 SOUTH 16TH"
+        "1107 SOUTH 16": "1107 SOUTH 16TH"
+        "1119 MARKET BOX 71": "1119 MARKET"
+        "1203 5": "1203 5TH"
+        "1219 1ST": "1219 1ST AVENUE"
+        "1300 NICOLAUS": "1300 NICOLAUS DRIVE"
+        "1300 WEST BURLINGTON": "1300 WEST BURLINGTON AVENUE"
+        "1303 NORTH FEDERAL": "1303 NORTH FEDERAL AVENUE"
+        "1320 EAST EUCLID": "1320 EAST EUCLID AVENUE"
+        "1907 STEVENS DRIVE UNITS C-EAST": "1907 STEVENS DRIVE UNIT C-EAST"
+        "209 EAST LECLAIRE ROAD": "209 EAST LE CLAIRE ROAD"
+        "2108 ISSAC NEWTON DRIVE": "2108 ISAAC NEWTON DRIVE"
+        "215 WEST MILWAUKEE": "215 WEST MILWAUKEE AVENUE"
+        "2325 7TH AVENUE NORTH NORTH": "2325 7TH AVENUE NORTH"
+        "2424 SOUTHWEST 9TH #1": "2424 SOUTHWEST 9TH"
+        "2424 SOUTHWEST 9TH # 1": "2424 SOUTHWEST 9TH"
+        "2810 WILLS AVENUE": "2810 WILLIS AVENUE"
+        "2839 EAST UNIVERSITY": "2839 EAST UNIVERSITY AVENUE"
+        "3100 SOUTHEAST GRIMES BLVD SUITE 100": "3100 SOUTHEAST GRIMES BLVD STE 100"
+        "315 STORU": "315 STORY"
+        "3594 LAFAYETTE": "3594 LAFAYETTE ROAD"
+        "3804 HUBBELL": "3804 HUBBELL AVENUE"
+        "4141 CENTERPOINT ROAD NORTHEAST": "4141 CENTER POINT ROAD NORTHEAST"
+        "4685 NORTHWEST 2ND": "4685 NORTHWEST 2ND AVENUE"
+        "7 GOETHE SUITE B": "7 GOETHE STE B"
+        "700 RHOMBERGE AVENUE": "700 RHOMBERG AVENUE"
+        "7229 UNIVERSTY AVENUE": "7229 UNIVERSITY AVENUE"
+        "903 NORTH SUMNER AVENUE": "903 NORTH SUMMER AVENUE"
+
+  city:
+    corrections:
+      "CLEARLAKE": "CLEAR LAKE"
+      "FT ATKINSON": "FORT ATKINSON"
+      "GRAND MOUNDS": "GRAND MOUND"
+      "GUTTENBURG": "GUTTENBERG"
+      "KELLOG": "KELLOGG"
+      "LEMARS": "LE MARS"
+      "MT PLEASANT": "MOUNT PLEASANT"
+      "MT VERNON": "MOUNT VERNON"
+      "OTTUWMA": "OTTUMWA"
+      "OTUMWA": "OTTUMWA"
+      "SAINT ANSGAR": "ST ANSGAR"
+    
+    store_city_mappings:
+      3822: "SWISHER"
+      5136: "URBANDALE"
+
+  zip_code:
+    string_format_corrections:
+      "712-2": "51529"
+
+    store_zipcode_mappings:
+      2514: 52302
+      3805: 52804
+      5097: 52403
+      2656: 50841
+      5091: 52761
+      5276: 51573
+
+  county_number:
+    store_county_number_mappings:
+      4320: 25
+      4944: 91
+      4067: 92
+      2656: 2
+      3461: 39
+      5012: 25
+      5882: 64
+      5998: 70
+      5220: 17
+      5276: 69
+      5280: 17
+      5287: 99
+
+  county_name:
+    corrections:
+      "BUENA VIST": "BUENA VISTA"
+      "CERRO GORD": "CERRO GORDO"
+      "OBRIEN": "O'BRIEN"
+      "POTTAWATTA": "POTTAWATTAMIE"
+
+GCP:
+
+  roles:
+    admin:
+      credentials_path: "credentials/tt-dev-001-419206-4551615b3e2a.json"
+  
+  buckets:
+    liquor_sales:
+      - name: "liquor_sales_bucket"
+        location: "asia-east2"
+
+  tables:
+    item_number_bridge:
+      - gcs_directory: "item_number_bridge"
+        bq_table_id: "tt-dev-001-419206.Liquor_sales_data.Item Number Bridge"
+    
+    category:
+      - gcs_directory: "categories"
+        bq_table_id: "tt-dev-001-419206.Liquor_sales_data.Category"
+
+    vendor:
+      - gcs_directory: "vendors"
+        bq_table_id: "tt-dev-001-419206.Liquor_sales_data.Vendor"
+
+    item_price_history:
+      - gcs_directory: "item_price_history"
+        bq_table_id: "tt-dev-001-419206.Liquor_sales_data.Item Price History"
+
+    item:
+      - gcs_directory: "items"
+        bq_table_id: "tt-dev-001-419206.Liquor_sales_data.Item"
+
+    store_number_bridge:
+      - gcs_directory: "store_number_bridge"
+        bq_table_id: "tt-dev-001-419206.Liquor_sales_data.Store Number Bridge"
+    
+    store_address_bridge:
+      - gcs_directory: "store_address_bridge"
+        bq_table_id: "tt-dev-001-419206.Liquor_sales_data.Store Address Bridge"
+
+    store_county:
+      - gcs_directory: "store_counties"
+        bq_table_id: "tt-dev-001-419206.Liquor_sales_data.Store County"
+
+    store_address_history:
+      - gcs_directory: "store_address_history"
+        bq_table_id: "tt-dev-001-419206.Liquor_sales_data.Store Address History"
+
+    store_address:
+      - gcs_directory: "store_addresses"
+        bq_table_id: "tt-dev-001-419206.Liquor_sales_data.Store Address"
+
+    invoice:
+      - gcs_directory: "invoices"
+        bq_table_id: "tt-dev-001-419206.Liquor_sales_data.Invoice"
+
