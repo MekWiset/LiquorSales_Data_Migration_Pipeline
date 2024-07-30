@@ -19,7 +19,7 @@ default_args = {
 with DAG(
 
     default_args = default_args,
-    dag_id = 'airspark_v4',
+    dag_id = 'liquor_sales_dag',
     start_date = airflow.utils.dates.days_ago(1),
     schedule_interval = None,
     catchup = False
@@ -42,7 +42,7 @@ with DAG(
         application = 'dags/jobs/table_vendor.py',
     )
 
-    item_price_history_table = SparkSubmitOperator(
+    item_price_history_task = SparkSubmitOperator(
         task_id = 'item_price_history',
         conn_id = 'spark-conn',
         application = 'dags/jobs/table_item_price_history.py',
@@ -126,7 +126,7 @@ with DAG(
 
 
     # Task Dependencies
-    start_task >> item_number_bridge_task >> vendor_task >> item_price_history_table >> category_task >> item_task >> store_address_bridge_task >> store_number_bridge_task
+    start_task >> item_number_bridge_task >> vendor_task >> item_price_history_task >> category_task >> item_task >> store_address_bridge_task >> store_number_bridge_task
     store_number_bridge_task >> store_address_history_task >> store_address_task >> store_county_task >> upload_to_gcs_task >> upload_gcs_to_bq_task >> trigger_invoice_feeding_dag_task
 
     

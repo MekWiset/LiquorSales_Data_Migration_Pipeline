@@ -1,1 +1,6 @@
+__pycache__
 venv/
+credentials/
+outputs/
+.DS_Store
+*.png
