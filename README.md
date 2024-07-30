@@ -6,10 +6,10 @@ The project provided an opportunity to explore various aspects of data engineeri
 However, given the constraints of a 3-month timeframe, there are some areas for improvement that I plan to address in the future.
 
 ### Data Architecture:
-![alt text](data_architecture_v3.png)
+![alt text](reference/data_architecture_v3.png)
 
 ### Entity-Relationship Diagram: 
-![alt text](ERD.png)
+![alt text](reference/ERD.png)
 
 ## Table of Contents
 
