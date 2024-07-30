@@ -56,8 +56,8 @@ Ensure you have the following installed on your system:
 
 1. **Clone the repository**
     ```bash
-    git clone https://github.com/MekWiset/PostgresToMongoDB_migration_project.git
-    cd PostgresToMongoDB_migration_project
+    git clone https://github.com/MekWiset/LiquorSales_Data_Pipeline.git
+    cd LiquorSales_Data_Pipeline
     ```
 
 2. **Create an `airflow.env` file from the example and configure your environment variables**
@@ -70,29 +70,58 @@ Ensure you have the following installed on your system:
     nano airflow.env
     ```
 
-4. **Create an `.env` file from the example and configure your sensitive information**
-    ```bash
-    cp env.example .env
-    nano .env
-    ```
-
-6. **Build and start the services using Docker Compose**
+4. **Build and start the services using Docker Compose**
     ```bash
     docker-compose up -d
     ```
 
-7. **Run the `postgres_to_mongodb` pipeline**
+5. **Create a Spark connection in Airflow**
+    - Open the Airflow UI at `http://localhost:8080`
+    - Navigate to **Admin** > **Connections**
+    - Click the **+** button to add a new connection
+    - Set the following details:
+        - **Connection ID**: `spark-conn`
+        - **Connection Type**: `Spark`
+        - **Host**: `spark://spark-master`
+        - **Port**: `8080`
+    - Click **Save**
+
+6. **Run the `liquor_sales_dag` pipeline**
     ```bash
-    airflow trigger_dag postgres_to_mongodb
+    airflow trigger_dag liquor_sales_dag
     ```
+
+7. **Run the `invoice_feeding` DAG to simulate data feeding**
+    ```bash
+    airflow trigger_dag invoice_feeding
+    ```
+
+8. **Set up Microsoft Azure services**
+    - Create Azure SQL Database Instance and connect it to Azure Data Studio
+    - Create data pipelines in `Data Factory` as shown in `cloud_snapshots/microsoft_azure`
+    - Set up Azure Databricks service to perform reconciliation:
+        - Create Databricks compute instance
+        - mount `raw_data` directory to Databricks using the `azure_databricks/adls_mount_job.ipynb` script
+        - Copy `azure_databricks/spark_job` to Databricks workspace
+    - Run the Data Factory pipelines once each sink destination has been linked to the respective table names
 
 ## Usage
 
 To run the ETL pipeline with Airflow UI, follow these steps:
 
-1. Access the Airflow UI at `http://localhost:8080` and trigger the DAG for the ETL process.
-2. Monitor the DAG execution and check logs for any issues.
-3. Verify the transformed data in the output directory or the specified destination.
+1. Access the Airflow UI at `http://localhost:8080` and trigger the DAG for the ETL process:
+    - Trigger the `liquor_sales_dag` for the main data pipeline.
+    - Trigger the `invoice_feeding` DAG to simulate data feeding.
+
+2. Monitor the DAG execution and check logs for any issues:
+    - Use the Airflow UI to view the progress of the DAG runs.
+    - Check the logs for each task to ensure there are no errors.
+
+3. Verify the transformed data in the output directory or the specified destination:
+    - Confirm that the transformed data is stored in the `outputs/` directory locally.
+    - Verify that the data has been loaded into Google Cloud Storage and BigQuery.
+    - Check Azure Data Lake Storage Gen 2 and Azure SQL Database for the reconciled data.
+
 
 ## Instructions
 
@@ -101,22 +130,53 @@ To run the ETL pipeline with Airflow UI, follow these steps:
      ```bash
      pip install -r requirements.txt
      ```
-   - Set up your Postgres database connection in the environment variables or configuration files.
-   - The data extraction is handled by the `postgres_extractor.py` script located in the `plugins/extract` directory. The script retrieves data from the Postgres database connection and stores it in the `data/medq_data.csv` file.
+   - Set up your connections to the data sources (Kaggle, Google Cloud Storage, and BigQuery) in the environment variables or configuration files.
 
 2. **Transform Data**:
-   - Data transformation is performed using the `data_transformer.py` scripts in the `plugins/transform` directory.
-   - `data_transformer.py` processes the raw data and saves the transformed data to `data/medq_data_transformed.csv`.
+   - Run the Spark jobs for each table located in the `dags/jobs` directory. These jobs handle the extraction, transformation, and loading (ETL) processes and store the output in the `outputs/` directory of the local directory.
+   - The Spark jobs also perform the necessary data transformations. Utility scripts such as `normalizer.py`, `configparser.py`, and `checkpointmanager.py` are applied within these Spark jobs to standardize, parse configurations, and manage checkpoints.
 
 3. **Load Data**:
-   - The `mongo_loader.py` script in the `plugins/load` directory handles data loading.
-   - It exports the transformed data to MongoDB as specified.
-
-4. **Run the DAG**:
-   - Ensure the DAG defined in `dags/pg_to_mongo_dag.py` is scheduled and triggered as required:
+   - The transformed data is saved in the `outputs/` directory of the local directory.
+   - Use the Airflow DAG to load the transformed data to Google Cloud Storage and BigQuery:
      ```bash
-     airflow trigger_dag postgres_to_mongodb
+     airflow trigger_dag liquor_sales_dag
      ```
+
+4. **Run the Data Pipeline**:
+   - Ensure the DAG defined in `dags/liquor_sales_dag.py` is scheduled and triggered as required:
+     ```bash
+     airflow trigger_dag liquor_sales_dag
+     ```
+   - To simulate data feeding, run the `invoice_feeding` DAG:
+     ```bash
+     airflow trigger_dag invoice_feeding
+     ```
+   - Use Apache Airflow to monitor and manage the execution of the data pipeline.
+
+5. **Spark Configuration in Airflow**:
+   - Create a Spark connection in Airflow with the following details:
+     - Connection ID: `spark-conn`
+     - Host: `spark://spark-master`
+     - Port: `8080`
+
+6. **Secure Data Handling**:
+   - Make sure to configure Azure Key Vault for managing sensitive connection strings and credentials as specified in your configuration files.
+
+7. **Azure Setup**:
+   - Set up your Azure account and configure the necessary resources including Azure Data Factory, Azure Data Lake Storage Gen 2 (ADLS Gen 2), and Azure SQL Database.
+   - Store the Google Cloud Platform (GCP) credentials JSON file in Azure Key Vault. This will be used as a key to securely access data from BigQuery.
+
+8. **Data Factory Configuration**:
+   - Use Azure Data Factory to import data from BigQuery. The credentials stored in Azure Key Vault will be used to authenticate and access the data.
+   - Configure pipelines in Azure Data Factory to reconcile the imported data from `raw_data/` and store it in `transformed_data/` in ADLS Gen 2.
+
+9. **Data Reconciliation and Storage**:
+   - The reconciled data in ADLS Gen 2 can be further processed and analyzed using Azure Databricks as required.
+   - Finally, load the reconciled data from ADLS Gen 2 to Azure SQL Database for querying and analysis.
+
+10. **Monitor and Manage**:
+    - Use the Azure portal to monitor and manage the data pipelines, storage, and databases to ensure smooth operation and timely updates.
 
 ## Project Structure
 
@@ -176,10 +236,13 @@ To run the ETL pipeline with Airflow UI, follow these steps:
 
 ## Features
 
-- **Data Extraction**: Retrieves data from MedQ Database.
-- **Data Transformation**: Processes and transforms the data using Pandas.
-- **Data Loading**: Exports transformed data to MongoDB.
-- **Incremental Data Updates**: Efficiently handles newly added data.
+- **Data Extraction**: Retrieves liquor sales data from multiple sources including Kaggle (CSV files), Google Cloud Storage, and BigQuery.
+- **Data Transformation**: Utilizes Apache Spark within Docker containers to process and transform the data, ensuring it meets the desired format and quality.
+- **Data Loading**: Loads transformed data into Azure Data Lake Storage Gen 2 and Azure SQL Database for further analysis and querying.
+- **Orchestration and Workflow Management**: Employs Apache Airflow to manage and automate the end-to-end data pipeline, ensuring smooth data flow and timely updates.
+- **Incremental Data Updates**: Efficiently handles newly added data by ensuring only new and updated records are processed and loaded into the target systems.
+- **Secure Data Handling**: Uses Azure Key Vault to manage and secure sensitive connection strings and credentials.
+- **Data Processing and Analysis**: Leverages Azure Databricks for advanced data processing and analytics, enabling deeper insights and reporting capabilities.
 
 ## Contributing
 
